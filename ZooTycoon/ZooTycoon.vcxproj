@@ -115,6 +115,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Animal.cpp" />
+    <ClCompile Include="src\InputValidationFunctions.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\Penguin.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\Tiger.cpp" />
+    <ClCompile Include="src\Turtle.cpp" />
+    <ClCompile Include="src\Zoo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Animal.hpp" />
+    <ClInclude Include="src\InputValidationFunctions.hpp" />
+    <ClInclude Include="src\Menu.hpp" />
+    <ClInclude Include="src\Penguin.hpp" />
+    <ClInclude Include="src\Player.hpp" />
+    <ClInclude Include="src\Tiger.hpp" />
+    <ClInclude Include="src\Turtle.hpp" />
+    <ClInclude Include="src\Zoo.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
