@@ -31,6 +31,8 @@ private:
 
 	std::vector<std::string> prompts;
 
+	int validateInputRangeMenu() const;
+
 public:
 
 	Menu();

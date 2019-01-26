@@ -9,7 +9,8 @@
 *	This function does not handle any logic for a main program 
 *	and must be implemented elseware.
 *
-*	The last menu function that should be given should be an exit option.
+*	The last menu function that should be given should be an exit option. 
+*	AN EXAMPLE FOR MENU LOGIC CAN BE FOUND AT THE BOTTOM
 **************************************************************/
 
 
@@ -124,7 +125,7 @@ Return:
 */
 int Menu::getUserChoice() const
 {
-	return validateInputRange(1, prompts.size());
+	return validateInputRangeMenu();
 }
 
 
@@ -213,8 +214,9 @@ string : string at the index specified
 //get a prompt message string from the menu if its within vector bounds
 std::string Menu::getPrompt(const int & index)
 {
-	if (index >= 0 && index < prompts.size()) {
-		return prompts[index];
+
+	if (index-1 >= 0 && index <= prompts.size()) {
+		return prompts[index-1];
 	}
 	else {
 		return "";
@@ -222,3 +224,81 @@ std::string Menu::getPrompt(const int & index)
 }
 
 
+
+
+
+
+/*
+The validation method that is always called when a choice is desired from a menu.
+
+The function returns an int guarnteed to be in range of the menu. If bad input is given,
+the menu is displayed again.
+
+*/
+int Menu::validateInputRangeMenu() const
+{
+	bool valid = false;
+	int toReturn;
+	while (!valid) {
+		display();
+		while (!(std::cin >> toReturn)) {
+			display();
+			std::cout << "Bad input. " << std::endl;
+			clearInputStream();
+		}
+
+		if (toReturn >= 1 && toReturn <= prompts.size()) {
+			valid = true;
+		}
+		else {
+			std::cout << "Input out of range. " << std::endl;
+			clearInputStream();
+		}
+	}
+
+	return toReturn;
+}
+
+
+
+
+
+
+
+
+
+/*
+EXAMPLE MENU LOGIC IMPLEMENTATION:
+
+int userChoice;
+	do {
+		userChoice = playGameMenu.getUserChoice();
+
+		switch (userChoice) {
+		case 1:
+			rounds = validateInputRange(MIN_ROUNDS, MAX_ROUNDS, playGameMenu.getPrompt(1));
+			break;
+
+		case 2:
+			player1Die = (DIE_TYPE)validateInputRange(0, 1, playGameMenu.getPrompt(2));
+			break;
+
+		case 3:
+			player2Die = (DIE_TYPE)validateInputRange(0, 1, playGameMenu.getPrompt(3));
+			break;
+
+		case 4:
+			player1DieSides = validateInputRange(MIN_SIDES, MAX_SIDES, playGameMenu.getPrompt(4));
+			break;
+
+		case 5:
+			player2DieSides = validateInputRange(MIN_SIDES, MAX_SIDES, playGameMenu.getPrompt(5));
+			break;
+
+		case 6:
+			break;
+		}
+
+
+
+	} while (userChoice != playGameMenu.getExitCode());*/
