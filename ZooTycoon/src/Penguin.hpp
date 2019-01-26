@@ -36,6 +36,7 @@ public:
 		std::cout << "Penguin " << this << " Age: " << this->age << std::endl;
 	}
 
+	static double getCost();
 
 };
 

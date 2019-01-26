@@ -12,18 +12,17 @@
 
 class Tiger	: public Animal{
 
+
+
 private:
 
 	double feedCost;		//feed_multiplier * food_base_constant
 	double payoffValue;		//default payoff  * default cost
 
 
-
-
 public:
 
 	Tiger();
-
 
 	double getFeedCost() const;
 
@@ -33,6 +32,7 @@ public:
 		std::cout << "Tiger " << this << " Age: " << this->age << std::endl;
 	}
 
+	static double getCost();
 
 
 };

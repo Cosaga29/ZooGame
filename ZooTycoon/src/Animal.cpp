@@ -28,3 +28,9 @@ void Animal::setAge(const int &value)
 {
 	age = value;
 }
+
+bool Animal::isAdult() const
+{
+	return age >= ADULT_AGE;
+}
+

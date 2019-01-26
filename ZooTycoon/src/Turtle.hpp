@@ -33,7 +33,7 @@ public:
 		std::cout << "Turtle: " << this << " Age: " << this->age << std::endl;
 	}
 
-
+	static double getCost();
 
 
 

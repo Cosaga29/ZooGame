@@ -3,6 +3,7 @@
 
 #include <iostream>
 #define BASE_FOOD_COST 10
+#define ADULT_AGE		3
 
 
 class Animal {
@@ -33,6 +34,8 @@ public:
 	double getPayoff() const;
 
 	void setAge(const int&);
+
+	bool isAdult() const;
 
 };
 

@@ -1,5 +1,7 @@
 #include "Tiger.hpp"
 
+
+
 Tiger::Tiger() :
 	Animal(DEFAULT_TIGER_AGE, DEFAULT_TIGER_COST, DEFAULT_TIGER_BABIES,
 			DEFAULT_TIGER_FOOD_MULTIPLIER, DEFAULT_TIGER_PAYOFF)
@@ -16,4 +18,9 @@ double Tiger::getFeedCost() const
 double Tiger::getPayoffValue() const 
 {
 	return payoffValue;
+}
+
+double Tiger::getCost()
+{
+	return DEFAULT_TIGER_COST;
 }

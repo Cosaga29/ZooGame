@@ -17,3 +17,8 @@ double Turtle::getPayoffValue() const
 {
 	return payoffValue;
 }
+
+double Turtle::getCost()
+{
+	return DEFAULT_TURTLE_COST;
+}

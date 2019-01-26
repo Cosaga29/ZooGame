@@ -11,7 +11,12 @@ double Player::getBalance() const
 	return balance;
 }
 
-void Player::modifyBalance(double value)
+void Player::buy(double value)
+{
+	balance -= value;
+}
+
+void Player::deposit(double value)
 {
 	balance += value;
 }

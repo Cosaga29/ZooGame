@@ -9,18 +9,19 @@
 #include "Penguin.hpp"
 #include "Turtle.hpp"
 #include "Player.hpp"
-
+#include "Menu.hpp"
 
 
 #define STARTING_CAPACITY 10
 
+enum ANIMAL_STATE {BABY = 1, ADULT = 3};
+
+enum EVENT_TYPE {SICK_EVENT, ATTENDANCE_EVENT, BABY_EVENT, NOTHING};
 
 
 class Zoo {
 
 private:
-
-
 
 	Player& bound_player;		//current bound player controlling the zoo
 
@@ -34,11 +35,18 @@ private:
 	int penguinCount;			//penguin counter
 	int turtleCount;			//turtle counter
 
+	double tigerCost;
+	double penguinCost;
+	double turtleCost;
+
+
 	Tiger*		m_tigers;		//tiger exhibit
 	Penguin*	m_penguins;		//penguin exhibit
 	Turtle*		m_turtles;		//turtle exhibit
 
 
+	Menu startMenu;
+	Menu startQuantityMenu;
 
 
 	bool isFull() const;						//check to see if a container needs resized
@@ -51,19 +59,41 @@ private:
 
 	int generateRandom(const int&, const int&) const;	//generate random number within range
 
+	void ageAnimals();
+
+	void init();
+
+	void buildMenus();
+
+	bool playerCanBuy(double) const;
+
+	void step();
+
+	double getFeedCost();
+
+	void removeAnimalEvent();
+
+	double attendanceBoomEvent();
+
+	void animalBirthEvent();
+
 
 
 public:
 
 	Zoo(Player&);
 
+	void addTiger(const int&, ANIMAL_STATE);
 
-	void addTiger(const int&);
+	void addPenguin(const int&, ANIMAL_STATE);
 
-	void addPenguin(const int&);
+	void addTurtle(const int&, ANIMAL_STATE);
 
-	void addTurtle(const int&);
+	bool removeTiger();
 
+	bool removePenguin();
+
+	bool removeTurtle();
 
 	void printAnimalContents() const {
 		std::cout << "TIGERS: " << std::endl;
@@ -84,15 +114,11 @@ public:
 
 	}
 
-
-
-	void ageAnimals();
-
-
+	std::string getPlayerMoney() {
+		return std::to_string(bound_player.getBalance());
+	}
 
 	
-
-
 
 };
 

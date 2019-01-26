@@ -17,3 +17,8 @@ double Penguin::getPayoffValue() const
 {
 	return payoffValue;
 }
+
+double Penguin::getCost()
+{
+	return DEFAULT_PENGUIN_COST;
+}

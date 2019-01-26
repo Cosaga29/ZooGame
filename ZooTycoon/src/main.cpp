@@ -10,29 +10,30 @@ int main() {
 
 	std::cout << "Zoo start: " << std::endl;
 
-	Player player1;
+	Player player1(100000);
 	Zoo zoo1(player1);
 
 
-	for (int i = 0; i < 20; i++) {
-		zoo1.addTiger(20);
-	}
-	for (int i = 0; i < 20; i++) {
-		zoo1.addPenguin(20);
-	}
-	for (int i = 0; i < 20; i++) {
-		zoo1.addTurtle(20);
-	}
 
-	zoo1.printAnimalContents();
+
 	//zoo1.addTiger(1);
 
+	//zoo1.printAnimalContents();
 
-	zoo1.ageAnimals();
+	zoo1.addTiger(1, BABY);
+	zoo1.addTiger(1, ADULT);
+	zoo1.addTiger(1, BABY);
+
+	zoo1.printAnimalContents();
+
+	std::cout << zoo1.removeTiger() << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 	zoo1.printAnimalContents();
 
 
+	
 
 
 	std::cin.ignore(34747, '\n');
