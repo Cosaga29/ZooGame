@@ -34,3 +34,8 @@ bool Animal::isAdult() const
 	return age >= ADULT_AGE;
 }
 
+int Animal::getNumberOfBabies() const
+{
+	return number_of_babies;
+}
+

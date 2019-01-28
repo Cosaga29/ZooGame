@@ -37,6 +37,8 @@ public:
 
 	bool isAdult() const;
 
+	int getNumberOfBabies() const;
+
 };
 
 

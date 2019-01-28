@@ -9,10 +9,10 @@ const calculations
 
 
 */
-Zoo::Zoo(Player& player) :
-	bound_player(player), tigerArraySize(STARTING_CAPACITY),
+Zoo::Zoo(Player& player, std::ostream& pgmOutput) :
+	bound_player(player), output(pgmOutput), tigerArraySize(STARTING_CAPACITY),
 	penguinArraySize(STARTING_CAPACITY),
-	turtleArraySize(STARTING_CAPACITY), dayCount(0),
+	turtleArraySize(STARTING_CAPACITY), dayCount(1),
 	tigerCount(0), penguinCount(0), turtleCount(0)
 {
 	//seed RNG
@@ -30,11 +30,20 @@ Zoo::Zoo(Player& player) :
 
 
 
-	//buildMenus();
-	//init();
+	buildMenus();
+	init();
+
 }
 
 
+
+/*
+Function to return the state of the 'pens' of animals. If any of the pens are full
+true is returned.
+
+Return:
+	bool - state of the pens of the zoo
+*/
 bool Zoo::isFull() const
 {
 	if (tigerCount == tigerArraySize || 
@@ -46,11 +55,20 @@ bool Zoo::isFull() const
 }
 
 
-
+/*
+Takes a current pointer to the tiger array, creates an array twice the size, copies all previous tiger instances over
+deletes the old animal array, doubles the size of the passed size variable,
+and sets the old pointer to the new double arrayed size
+*/
 void Zoo::resizeTigerArray(Tiger*& animalArray, int& size) {
 
 	//allocate memory for twice the current array size
 	Tiger* arr = new Tiger[size * 2];
+	
+	//copy old elements to new array
+	for (int i = 0; i < tigerCount; i++) {
+		arr[i] = animalArray[i];
+	}
 
 	//delete old tiger array
 	delete[] animalArray;
@@ -71,6 +89,11 @@ void Zoo::resizePenguinArray(Penguin *& animalArray, int &size)
 {
 	//allocate memory for twice the current array size
 	Penguin* arr = new Penguin[size * 2];
+
+	//copy old elements to new array
+	for (int i = 0; i < penguinCount; i++) {
+		arr[i] = animalArray[i];
+	}
 
 	//delete old penguin array
 	delete[] animalArray;
@@ -94,6 +117,11 @@ void Zoo::resizeTurtleArray(Turtle *& animalArray, int &size)
 	//allocate memory for twice the current array size
 	Turtle* arr = new Turtle[size * 2];
 
+	//copy old elements to new array
+	for (int i = 0; i < turtleCount; i++) {
+		arr[i] = animalArray[i];
+	}
+
 	//delete old turtle array
 	delete[] animalArray;
 
@@ -114,16 +142,15 @@ int Zoo::generateRandom(const int& min, const int& max) const
 {
 
 	int toReturn = rand();
-	toReturn = (toReturn % (min + max)) - min;
+	//old:(toReturn % (min + max)) - min;
+	toReturn = (toReturn % (max - min + 1)) + min;
 
-	//
-	std::cout << "random num: " <<  toReturn << std::endl;
 	return toReturn;
 
 }
 
 
-void Zoo::addTiger(const int &quantity, ANIMAL_STATE age)
+void Zoo::addTiger(const int &quantity, int age)
 {
 
 	for (int i = 0; i < quantity; i++) {
@@ -134,7 +161,7 @@ void Zoo::addTiger(const int &quantity, ANIMAL_STATE age)
 			resizeTigerArray(m_tigers, tigerArraySize); //resize
 			tigerCount++;
 		}
-		m_tigers[tigerCount].setAge(age);
+		m_tigers[tigerCount - 1].setAge(age);
 
 	}
 
@@ -142,7 +169,7 @@ void Zoo::addTiger(const int &quantity, ANIMAL_STATE age)
 
 }
 
-void Zoo::addPenguin(const int &quantity, ANIMAL_STATE age)
+void Zoo::addPenguin(const int &quantity, int age)
 {
 	
 	for (int i = 0; i < quantity; i++) {
@@ -153,12 +180,12 @@ void Zoo::addPenguin(const int &quantity, ANIMAL_STATE age)
 			resizePenguinArray(m_penguins, penguinArraySize); //resize
 			penguinCount++;
 		}
-		m_penguins[penguinCount].setAge(age);
+		m_penguins[penguinCount - 1].setAge(age);
 	}
 
 }
 
-void Zoo::addTurtle(const int &quantity, ANIMAL_STATE age)
+void Zoo::addTurtle(const int &quantity, int age)
 {
 
 	for (int i = 0; i < quantity; i++) {
@@ -170,7 +197,7 @@ void Zoo::addTurtle(const int &quantity, ANIMAL_STATE age)
 			resizeTurtleArray(m_turtles, turtleArraySize); //resize
 			turtleCount++;
 		}
-		m_turtles[turtleCount].setAge(age);
+		m_turtles[turtleCount - 1].setAge(age);
 	}
 
 }
@@ -179,7 +206,7 @@ bool Zoo::removeTiger()
 {
 	if (tigerCount > 0) {
 		//generate random number between 0 and (tigerCount - 1)
-		int randIndex = generateRandom(0, tigerCount);
+		int randIndex = generateRandom(0, tigerCount - 1);
 
 
 		//set to-be-removed animal to default age
@@ -203,7 +230,7 @@ bool Zoo::removePenguin()
 {
 	if (penguinCount > 0) {
 		//generate random number between 0 and (tigerCount - 1)
-		int randIndex = generateRandom(0, (penguinCount));
+		int randIndex = generateRandom(0, (penguinCount - 1));
 
 
 		//set to-be-removed animal to default age
@@ -228,7 +255,7 @@ bool Zoo::removeTurtle()
 {
 	if (turtleCount > 0) {
 		//generate random number between 0 and (tigerCount - 1)
-		int randIndex = generateRandom(0, (turtleCount));
+		int randIndex = generateRandom(0, (turtleCount - 1));
 
 
 		//set to-be-removed animal to default age
@@ -286,7 +313,7 @@ void Zoo::init() {
 				userChoice = startQuantityMenu.getUserChoice();
 
 				if (playerCanBuy(userChoice * tigerCost)) {
-					addTiger(userChoice, BABY);
+					addTiger(userChoice, 1);
 					bound_player.buy(userChoice * tigerCost);
 				}
 				else {
@@ -301,7 +328,7 @@ void Zoo::init() {
 				userChoice = startQuantityMenu.getUserChoice();
 
 				if (playerCanBuy(userChoice * penguinCost)) {
-					addPenguin(userChoice, BABY);
+					addPenguin(userChoice, 1);
 					bound_player.buy(userChoice * penguinCost);
 				}
 				else {
@@ -316,7 +343,7 @@ void Zoo::init() {
 				userChoice = startQuantityMenu.getUserChoice();
 
 				if (playerCanBuy(userChoice * turtleCost)) {
-					addTurtle(userChoice, BABY);
+					addTurtle(userChoice, 1);
 					bound_player.buy(userChoice * turtleCost);
 				}
 				else {
@@ -333,14 +360,6 @@ void Zoo::init() {
 	
 
 
-
-
-
-
-
-
-
-
 }
 
 void Zoo::buildMenus()
@@ -351,6 +370,16 @@ void Zoo::buildMenus()
 
 	startQuantityMenu.addPrompt("Purchase 1");
 	startQuantityMenu.addPrompt("Purchase 2");
+
+	dailyBuyPromptMenu.addPrompt("Would you like to buy an adult animal? (y/n)");
+
+	dailyBuyMenu.addPrompt("Purchase adult Tiger:   ");
+	dailyBuyMenu.addPrompt("Purchase adult Penguin: ");
+	dailyBuyMenu.addPrompt("Purchase adult Turtle:  ");
+
+	repeatMenu.addPrompt("Continue");
+	repeatMenu.addPrompt("Exit");
+
 
 }
 
@@ -368,56 +397,130 @@ bool Zoo::playerCanBuy(double cost) const
 /*
 Simulate one day at the zoo
 */
-void Zoo::step()
+void Zoo::start()
 {
-	double bonus = 0.0;
+	int userChoice = 0;
+	bool playerBroke = false;
+	char playerBuyChoice;
+
+	double bonus;
+	double dailyProfit;
+
+	//check that the player didn't buy too many animals at the start:
+	if (!playerCanBuy(getFeedCost())) {
+		output << "GAME OVER: You cannot afford feed cost of " << getFeedCost()
+			<< " with current balance of " << bound_player.getBalance();
+		return;
+	}
 
 
-	//while the player hasnt chosen to exit OR player hasn't ran out of money
+	while ((userChoice != repeatMenu.getExitCode())) {	//game loop, exit only if player gives exit code
+		bonus = 0.0;			//reset profit variables for the day
+		dailyProfit = 0.0;
+
+		printAnimalContents();
+
+		//format and display player balance and day Number
+		output << "\n\n\n";
+		output << "[DAY: " << dayCount << "]";
+		output << "\tYour Balance: " << bound_player.getBalance() << "\n" << std::endl;
+		
+
+		//age all the animals
+		ageAnimals();
+
+		//user needs to pay feeding cost (calculate feed cost)
+		bound_player.buy(getFeedCost());
+		output << "You paid " << getFeedCost() << " in feeding costs.\n" << std::endl;
 
 
-
-	//age all the animals
-	ageAnimals();
-
-
-	//user needs to pay feeding cost (calculate feed cost)
-	bound_player.buy(getFeedCost());
-
-
-	//get a random number for a random event
-	//TODO: implement events
-	switch (static_cast<EVENT_TYPE>(generateRandom(0, 3))){
+		//get a random number for a random event
+		switch (static_cast<EVENT_TYPE>(generateRandom(0, 3))) {
 
 		case SICK_EVENT:
+			removeAnimalEvent();
 			break;
 
 
 		case ATTENDANCE_EVENT:
+			bonus = attendanceBoomEvent();
 			break;
 
 
 		case BABY_EVENT:
+			animalBirthEvent();
 			break;
 
 
 		case NOTHING:
+			output << "[Day] " << dayCount << std::endl;
+			output << "\t";
+			output << "Nothing eventful happened today." << std::endl;
 			break;
 
 
+		}
+
+		//calculate profit for the day
+		dailyProfit = (m_tigers[0].getPayoffValue() * tigerCount) + bonus
+			+ (m_penguins[0].getPayoffValue() * penguinCount)
+			+ (m_turtles[0].getPayoffValue() * turtleCount);
+
+
+		//display profit for the user
+		output << std::endl;
+		output << "Profits for day: " << dayCount << "\n"
+			<< "\tFrom Tigers:   " << (m_tigers[0].getPayoffValue() * tigerCount) << "\tBonus: " << (bonus) << "\n"
+			<< "\tFrom Penguins: " << (m_penguins[0].getPayoffValue() * penguinCount) << "\n"
+			<< "\tFrom Turtles:  " << (m_turtles[0].getPayoffValue() * turtleCount) << "\n"
+			<< "\tTOTAL:         " << (dailyProfit) << "\n\n" << std::endl;;
+
+		bound_player.deposit(dailyProfit);
+
+		//ask player if they would like to buy an adult animal, if they do, ask for animal type
+		//add the ADULT animal to the zoo and subtract cost
+
+		playerBuyChoice = validateInputYN(dailyBuyPromptMenu.getPrompt(1));
+
+		if (playerBuyChoice == 'y') {
+			switch (dailyBuyMenu.getUserChoice()) {
+			case 1:
+				output << "\nYou have purchased an adult tiger!\n " << std::endl;
+				addTiger(1, ADULT);
+				bound_player.buy(m_tigers[0].getCost());
+				break;
+
+			case 2:
+				output << "\nYou have purchased an adult penguin!\n " << std::endl;
+				addPenguin(1, ADULT);
+				bound_player.buy(m_penguins[0].getCost());
+				break;
+
+			case 3:
+				output << "\nYou have purchased an adult turtle!\n " << std::endl;
+				addTurtle(1, ADULT);
+				bound_player.buy(m_turtles[0].getCost());
+				break;
+			}
+
+		}
+
+
+		//check if player has enough money to pay for feeding cost for next round
+		if (!playerCanBuy(getFeedCost())) {
+			playerBroke = true;
+			output << "GAME OVER: You cannot afford feed cost of " << (getFeedCost())
+				<< " with current balance of " << bound_player.getBalance();
+			return;
+		}
+		else {
+			//check to see if the player would like to exit
+			repeatMenu.displayMessage("Would you like to continue playing? ");
+			userChoice = repeatMenu.getUserChoice();
+		}
 	}
 
-
-
-	//calculate profit for the day
-
-
-
-	//ask player if they would like to buy adult animal, if they do, ask for animal type
-	//add the ADULT animal to the zoo and subtract cost
-
-
-
+	dayCount++;
 }
 
 double Zoo::getFeedCost()
@@ -439,7 +542,183 @@ double Zoo::getFeedCost()
 
 void Zoo::removeAnimalEvent()
 {
+	switch (generateRandom(1, 3)) {
+		output << "[Day: " << (dayCount) << "]"  "   (Event)" << std::endl;
+		output << "\t";
+
+	//tiger death
+	case 1:
+		if (removeTiger()) {
+			output << "A sudden sickness has affected the tigers, one has died. " << std::endl;
+		}
+		else {
+			output << "You hear rumors of tigers being affected by a sickness, but you don't own any!" << std::endl;
+		}
+		break;
+
+	//penguin death
+	case 2:
+		if (removePenguin()) {
+			output << "A sudden sickness has affected the penguins, one has died. " << std::endl;
+		}
+		else {
+			output << "You hear rumors of penguins being affected by a sickness, but you don't own any!" << std::endl;
+		}
+		break;
+
+	//turtle death
+	case 3:
+		if (removeTurtle()) {
+			output << "A sudden sickness has affected the turtle, one has died. " << std::endl;
+		}
+		else {
+			output << "You hear rumors of turtles being affected by a sickness, but you don't own any!" << std::endl;
+		}
+		break;
+	}
+
+	output << std::endl;
+
+}
+
+double Zoo::attendanceBoomEvent()
+{
+
+	output << "[Day: " << (dayCount) << "]"  "   (Event)" << std::endl;
+	output << "\t";
+
+	double bonusReturn = 0.0;
+	int tigerBonus;
+
+	//calculate the bonus money from an attendence boom
+	if (tigerCount == 0) {
+		output << "A boom in attendance occured at your zoo, but the guests wanted to see tigers." << std::endl;
+	}
+	else {
+		output << "A boom in attendance occured at your zoo, each tiger produced extra money!" << std::endl;
+		for (int i = 0; i < tigerCount; i++) {
+			//for each tiger, generate a random bonus
+			tigerBonus = generateRandom(250, 500);
+			bonusReturn += tigerBonus;
+		}
+	}
+
+	output << "\tBonus Money: " << (bonusReturn) << std::endl;
+
+	output << std::endl;
+
+	return bonusReturn;
+}
 
 
+
+void Zoo::animalBirthEvent()
+{
+	output << "[Day: " << (dayCount) << "]"  "   (Event)"<< std::endl;
+	output << "\t";
+	
+	int zooAdultState = zooHasAdult();
+
+	if (zooAdultState == -1) {
+		output << "You hear tales of other zoos having a population boom today..." << std::endl;
+		return;
+	}
+
+
+	//pick an animal type to have a baby
+	ANIMAL_TYPE animalType = static_cast<ANIMAL_TYPE>(generateRandom(0, 2));
+
+
+	//check that the zoo contains an adult animal of that type:
+	if (hasAdult(animalType)) {
+		//generate baby event from randomly picked animal adult
+		switch (animalType) {
+		case TIGER:
+			output << "A tiger has given birth to " << (m_tigers[0].getNumberOfBabies()) << " babie(s)!" << std::endl;
+			addTiger(m_tigers[0].getNumberOfBabies(), BABY);
+			break;
+
+		case PENGUIN:
+			output << "A penguin has given birth to " << (m_penguins[0].getNumberOfBabies()) << " babie(s)!" << std::endl;
+			addPenguin(m_penguins[0].getNumberOfBabies(), BABY);
+			break;
+
+		case TURTLE:
+			output << "A turtle has given birth to " << (m_turtles[0].getNumberOfBabies()) << " babie(s)!" << std::endl;
+			addTurtle(m_turtles[0].getNumberOfBabies(), BABY);
+			break;
+		}
+
+
+
+	}
+	else {
+		//generate a baby event from the guarenteed adult from zooAdultState
+		switch (zooAdultState) {
+		case TIGER:
+			output << "A tiger has given birth to " << (m_tigers[0].getNumberOfBabies()) << " babies!" << std::endl;
+			addTiger(m_tigers[0].getNumberOfBabies(), BABY);
+			break;
+
+		case PENGUIN:
+			output << "A penguin has given birth to " << (m_penguins[0].getNumberOfBabies()) << " babies!" << std::endl;
+			addPenguin(m_penguins[0].getNumberOfBabies(), BABY);
+			break;
+
+		case TURTLE:
+			output << "A turtle has given birth to " << (m_turtles[0].getNumberOfBabies()) << " babies!" << std::endl;
+			addTurtle(m_turtles[0].getNumberOfBabies(), BABY);
+			break;
+		}
+	}
+
+	output << std::endl;
+}
+
+bool Zoo::hasAdult(ANIMAL_TYPE animalType)
+{
+	switch (animalType) {
+	case TIGER:
+		for (int i = 0; i < tigerCount; i++) {
+			if (m_tigers[i].getAge() >= ADULT) {
+				return true;
+			}
+		}
+		return false;
+
+	case PENGUIN:
+		for (int i = 0; i < tigerCount; i++) {
+			if (m_penguins[i].getAge() >= ADULT) {
+				return true;
+			}
+		}
+		return false;
+
+	case TURTLE:
+		for (int i = 0; i < tigerCount; i++) {
+			if (m_turtles[i].getAge() >= ADULT) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	return false;
+}
+
+int Zoo::zooHasAdult()
+{
+	if (hasAdult(TIGER)) {
+		return TIGER;
+	}
+	else if (hasAdult(PENGUIN)){
+		return PENGUIN;
+	}
+	else if (hasAdult(TURTLE)) {
+		return TURTLE;
+	}
+	else {
+		return -1;
+	}
 }
 

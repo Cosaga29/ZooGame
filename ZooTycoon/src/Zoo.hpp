@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <sstream>
+#include <iomanip>
 
 #include "Animal.hpp"
 #include "Tiger.hpp"
@@ -14,16 +16,18 @@
 
 #define STARTING_CAPACITY 10
 
-enum ANIMAL_STATE {BABY = 1, ADULT = 3};
+enum ANIMAL_STATE {BABY = 0, ADULT = 3};
 
 enum EVENT_TYPE {SICK_EVENT, ATTENDANCE_EVENT, BABY_EVENT, NOTHING};
 
+enum ANIMAL_TYPE {TIGER, PENGUIN, TURTLE};
 
 class Zoo {
 
 private:
 
 	Player& bound_player;		//current bound player controlling the zoo
+	std::ostream& output;		//current bound output stream
 
 	int tigerArraySize;			//max size of array, default = 10, will double if full
 	int penguinArraySize;		//max size of array, default = 10, will double if full
@@ -47,6 +51,9 @@ private:
 
 	Menu startMenu;
 	Menu startQuantityMenu;
+	Menu dailyBuyPromptMenu;
+	Menu dailyBuyMenu;
+	Menu repeatMenu;
 
 
 	bool isFull() const;						//check to see if a container needs resized
@@ -67,8 +74,6 @@ private:
 
 	bool playerCanBuy(double) const;
 
-	void step();
-
 	double getFeedCost();
 
 	void removeAnimalEvent();
@@ -77,17 +82,19 @@ private:
 
 	void animalBirthEvent();
 
+	bool hasAdult(ANIMAL_TYPE);
 
+	int zooHasAdult();
 
 public:
 
-	Zoo(Player&);
+	Zoo(Player&, std::ostream&);
 
-	void addTiger(const int&, ANIMAL_STATE);
+	void addTiger(const int&, int);
 
-	void addPenguin(const int&, ANIMAL_STATE);
+	void addPenguin(const int&, int);
 
-	void addTurtle(const int&, ANIMAL_STATE);
+	void addTurtle(const int&, int);
 
 	bool removeTiger();
 
@@ -118,7 +125,7 @@ public:
 		return std::to_string(bound_player.getBalance());
 	}
 
-	
+	void start();
 
 };
 
