@@ -1,28 +1,6 @@
 #ifndef ZOO_HPP
 #define ZOO_HPP
 
-/*************************************************************
-*	Author: Martin Edmunds
-*	Email: edmundsm@oregonstate.edu
-*	Class: CS 162-400
-*	Date: 01/27/19
-*	Project: Project 2
-*
-*	Description: Zoo class for the Zoo Tycoon Project
-*	Utilizes the animal base class and player class to simulate a zoo.
-*
-*	The zoo consists of three dynamic animal containers, Tiger*, Penguin*, Turtle*
-*	Each pen has a number of animals defined by animalCount and is manipulated by 
-*	the add and remove animal methods. 
-*
-*	Additionally, the zoo events are each defined by a certain function that are called
-*	depeneding upon what random number is generated.
-*
-*	The class also contains a simple number generator method that is used frequently.
-*
-**************************************************************/
-
-
 #include <stdlib.h>
 #include <time.h>
 #include <sstream>
@@ -34,6 +12,7 @@
 #include "Turtle.hpp"
 #include "Player.hpp"
 #include "Menu.hpp"
+
 
 #define STARTING_CAPACITY 10
 
@@ -77,9 +56,9 @@ private:
 	Menu repeatMenu;
 
 
-	bool isFull() const;								//check to see if a container needs resized
+	bool isFull() const;						//check to see if a container needs resized
 	
-	void resizeTigerArray(Tiger*&, int&);				//double the size constant and array passed in
+	void resizeTigerArray(Tiger*&, int&);		//double the size constant and array passed in
 
 	void resizePenguinArray(Penguin*&, int&);	
 
@@ -107,6 +86,10 @@ private:
 
 	int zooHasAdult();
 
+public:
+
+	Zoo(Player&, std::ostream&);
+
 	void addTiger(const int&, int);
 
 	void addPenguin(const int&, int);
@@ -118,12 +101,6 @@ private:
 	bool removePenguin();
 
 	bool removeTurtle();
-
-public:
-
-	Zoo(Player&, std::ostream&);
-
-	~Zoo();
 
 	void printAnimalContents() const {
 		std::cout << "TIGERS: " << std::endl;
@@ -150,9 +127,12 @@ public:
 
 	void start();
 
-
-
 };
+
+
+
+
+
 
 
 

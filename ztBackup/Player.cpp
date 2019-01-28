@@ -1,13 +1,3 @@
-/*************************************************************
-*	Author: Martin Edmunds
-*	Email: edmundsm@oregonstate.edu
-*	Class: CS 162-400
-*	Date: 01/27/19
-*	Project: Project 2
-*
-*	Description:
-**************************************************************/
-
 #include "Player.hpp"
 
 Player::Player() :

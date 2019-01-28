@@ -1,5 +1,21 @@
+/*************************************************************
+*	Author: Martin Edmunds
+*	Email: edmundsm@oregonstate.edu
+*	Class: CS 162-400
+*	Date: 01/27/19
+*	Project: Project 2
+*
+*	Description: Penguin class, defines age, cost, babies, foodx,
+*	payoff value for the penguin class. The payoff value is precalculates
+*	and stored as a variable to improve run-time speed.
+
+INHERITS FROM ANIMAL
+**************************************************************/
+
 #include "Penguin.hpp"
 
+
+/*Default connstructor, sets class variables to constants defined at top of class header*/
 Penguin::Penguin() :
 	Animal(DEFAULT_PENGUIN_AGE, DEFAULT_PENGUIN_COST, DEFAULT_PENGUIN_BABIES,
 		DEFAULT_PENGUIN_FOOD_MULTIPLIER, DEFAULT_PENGUIN_PAYOFF)

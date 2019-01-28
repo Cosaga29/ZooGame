@@ -1,14 +1,5 @@
-/*************************************************************
-*	Author: Martin Edmunds
-*	Email: edmundsm@oregonstate.edu
-*	Class: CS 162-400
-*	Date: 01/27/19
-*	Project: Project 2
-*
-*	Description:
-**************************************************************/
-
 #include "Zoo.hpp"
+
 
 
 /*
@@ -33,21 +24,15 @@ Zoo::Zoo(Player& player, std::ostream& pgmOutput) :
 	m_penguins = new Penguin[STARTING_CAPACITY];
 	m_turtles = new Turtle[STARTING_CAPACITY];
 
-	tigerCost = Tiger::getCost();					//optimization step to pull class cost info into zoo class
-	penguinCost = Penguin::getCost();			
+	tigerCost = Tiger::getCost();
+	penguinCost = Penguin::getCost();
 	turtleCost = Turtle::getCost();
 
 
 
 	buildMenus();
 	init();
-}
 
-Zoo::~Zoo()
-{
-	delete[] m_tigers;
-	delete[] m_penguins;
-	delete[] m_turtles;
 }
 
 
@@ -99,9 +84,7 @@ void Zoo::resizeTigerArray(Tiger*& animalArray, int& size) {
 }
 
 
-/*
-See resizeTigerArray
-*/
+
 void Zoo::resizePenguinArray(Penguin *& animalArray, int &size)
 {
 	//allocate memory for twice the current array size
@@ -128,9 +111,7 @@ void Zoo::resizePenguinArray(Penguin *& animalArray, int &size)
 }
 
 
-/*
-See resizeTigerArray
-*/
+
 void Zoo::resizeTurtleArray(Turtle *& animalArray, int &size)
 {
 	//allocate memory for twice the current array size
@@ -156,15 +137,7 @@ void Zoo::resizeTurtleArray(Turtle *& animalArray, int &size)
 
 
 
-/*
-Generates a random number between min and max and returns the value
 
-Param:
-	min - min number to roll
-	max - max number to roll
-
-Return - random int between min/max
-*/
 int Zoo::generateRandom(const int& min, const int& max) const
 {
 
@@ -177,10 +150,6 @@ int Zoo::generateRandom(const int& min, const int& max) const
 }
 
 
-/*
-Adds a quantity of tigers to a pen in the zoo. Sets them to a certain age.
-Checks to see if the animal pen needs to be resized, if so, calls resize method
-*/
 void Zoo::addTiger(const int &quantity, int age)
 {
 
@@ -200,11 +169,6 @@ void Zoo::addTiger(const int &quantity, int age)
 
 }
 
-
-/*
-Adds a quantity of penguins to a pen in the zoo. Sets them to a certain age.
-Checks to see if the animal pen needs to be resized, if so, calls resize method
-*/
 void Zoo::addPenguin(const int &quantity, int age)
 {
 	
@@ -221,11 +185,6 @@ void Zoo::addPenguin(const int &quantity, int age)
 
 }
 
-
-/*
-Adds a quantity of turtles to a pen in the zoo. Sets them to a certain age.
-Checks to see if the animal pen needs to be resized, if so, calls resize method
-*/
 void Zoo::addTurtle(const int &quantity, int age)
 {
 
@@ -243,12 +202,6 @@ void Zoo::addTurtle(const int &quantity, int age)
 
 }
 
-
-/*
-Removes a random tiger from the zoo. The method works by randomly picking
-a tiger between 0 and tigercount-1 (an element in the tiger array), sets the age to 1 (bebug purpose)
-and returns a true or false value depending on if the animal could be removed or not.
-*/
 bool Zoo::removeTiger()
 {
 	if (tigerCount > 0) {
@@ -273,9 +226,6 @@ bool Zoo::removeTiger()
 }
 
 
-/*
-See removeTiger()
-*/
 bool Zoo::removePenguin()
 {
 	if (penguinCount > 0) {
@@ -301,9 +251,6 @@ bool Zoo::removePenguin()
 }
 
 
-/*
-See removeTiger()
-*/
 bool Zoo::removeTurtle()
 {
 	if (turtleCount > 0) {
@@ -328,10 +275,7 @@ bool Zoo::removeTurtle()
 }
 
 
-/*
-Loops through each pen of the zoo class and incremements the age of all animal-type
-objects
-*/
+
 void Zoo::ageAnimals()
 {
 
@@ -350,21 +294,15 @@ void Zoo::ageAnimals()
 }
 
 
-/*
-Initializes the zoo:
-	-gets starting amount of animals from the user (in groups of 1 or 2)
-	-makes sure the zoo has at least 1 or 2 of each animal to start the simulation
 
-*/
 void Zoo::init() {
 
 	//start game
 	bool goodStart = false;
 	int userChoice;
 
-	//while user has not purchased at least 1 animal
-	while (!goodStart) {
 
+	while (!goodStart) {
 		startMenu.displayMessage("Purchase at least 1 of each animal to continue.");
 		startMenu.displayMessage("\tBalance: " + getPlayerMoney());
 		switch (startMenu.getUserChoice()) {
@@ -374,12 +312,12 @@ void Zoo::init() {
 				startQuantityMenu.displayMessage("1 or 2?");
 				userChoice = startQuantityMenu.getUserChoice();
 
-				if (playerCanBuy(userChoice * tigerCost)) {			//checks to see if the player can afford the quantity of animal type
+				if (playerCanBuy(userChoice * tigerCost)) {
 					addTiger(userChoice, 1);
-					bound_player.buy(userChoice * tigerCost);		//purchase action
+					bound_player.buy(userChoice * tigerCost);
 				}
 				else {
-					output << "Not enough money" << std::endl;
+					std::cout << "Not enough money" << std::endl;
 				}
 
 				break;
@@ -389,12 +327,12 @@ void Zoo::init() {
 				startQuantityMenu.displayMessage("1 or 2?");
 				userChoice = startQuantityMenu.getUserChoice();
 
-				if (playerCanBuy(userChoice * penguinCost)) {		//checks to see if the player can afford the quantity of animal type
+				if (playerCanBuy(userChoice * penguinCost)) {
 					addPenguin(userChoice, 1);
-					bound_player.buy(userChoice * penguinCost);		//purchase action
+					bound_player.buy(userChoice * penguinCost);
 				}
 				else {
-					output << "Not enough money" << std::endl;
+					std::cout << "Not enough money" << std::endl;
 				}
 
 				break;
@@ -404,18 +342,18 @@ void Zoo::init() {
 				startQuantityMenu.displayMessage("1 or 2?");
 				userChoice = startQuantityMenu.getUserChoice();
 
-				if (playerCanBuy(userChoice * turtleCost)) {		//checks to see if the player can afford the quantity of animal type
+				if (playerCanBuy(userChoice * turtleCost)) {
 					addTurtle(userChoice, 1);
-					bound_player.buy(userChoice * turtleCost);		//purchase action
+					bound_player.buy(userChoice * turtleCost);
 				}
 				else {
-					output << "Not enough money" << std::endl;
+					std::cout << "Not enough money" << std::endl;
 				}
 
 				break;
 		}
 
-		if (tigerCount >= 1 && penguinCount >= 1 && turtleCount >= 1) {		//make sure player has at least 1 of each animal
+		if (tigerCount >= 1 && penguinCount >= 1 && turtleCount >= 1) {
 			goodStart = true;
 		}
 	}
@@ -424,11 +362,6 @@ void Zoo::init() {
 
 }
 
-
-
-/*
-Helper function to build all the necessary menu prompts that will be needed for the game
-*/
 void Zoo::buildMenus()
 {
 	startMenu.addPrompt("Purchase Tiger:   ");
@@ -450,16 +383,6 @@ void Zoo::buildMenus()
 
 }
 
-
-/*
-Checks to see if the player has enough money to make the purchase
-
-Param:
-	cost - purchase to be made
-
-Return:
-	bool - truth value of player purchase action
-*/
 bool Zoo::playerCanBuy(double cost) const
 {
 	if (bound_player.getBalance() - cost >= 0) {
@@ -472,28 +395,16 @@ bool Zoo::playerCanBuy(double cost) const
 
 
 /*
-Simulate the zoo, each loop in the 'while' statement is one day of the zoo.
-
-A simple day loop consists of the following actions:
-	-age the animals
-	-player feeds the animals (pays feeding cost)
-	-generate a random event to take place
-	-calculate daily profit, add to players balance
-	-prompt user to purchase 1 adult animal
-	
+Simulate one day at the zoo
 */
 void Zoo::start()
 {
-	int userChoice = 0;				//current user choice
-	bool playerBroke = false;		//determins if player loses game
-	char playerBuyChoice;			//y/n store variable for user
-
-
+	int userChoice = 0;
+	bool playerBroke = false;
+	char playerBuyChoice;
 
 	double bonus;
 	double dailyProfit;
-
-
 
 	//check that the player didn't buy too many animals at the start:
 	if (!playerCanBuy(getFeedCost())) {
@@ -503,17 +414,11 @@ void Zoo::start()
 	}
 
 
-
-
 	while ((userChoice != repeatMenu.getExitCode())) {	//game loop, exit only if player gives exit code
-		
 		bonus = 0.0;			//reset profit variables for the day
 		dailyProfit = 0.0;
 
-
-		printAnimalContents();			//debug purposes
-
-
+		printAnimalContents();
 
 		//format and display player balance and day Number
 		output << "\n\n\n";
@@ -524,24 +429,21 @@ void Zoo::start()
 		//age all the animals
 		ageAnimals();
 
-
-
 		//user needs to pay feeding cost (calculate feed cost)
 		bound_player.buy(getFeedCost());
 		output << "You paid " << getFeedCost() << " in feeding costs.\n" << std::endl;
 
 
-
 		//get a random number for a random event
-		switch (static_cast<EVENT_TYPE>(generateRandom(0, 3))) { //generate event between [sick_event - nothing]
+		switch (static_cast<EVENT_TYPE>(generateRandom(0, 3))) {
 
 		case SICK_EVENT:
-			removeAnimalEvent();			//remove an animal to sickness
+			removeAnimalEvent();
 			break;
 
 
 		case ATTENDANCE_EVENT:
-			bonus = attendanceBoomEvent();	//calculate bonus money from event
+			bonus = attendanceBoomEvent();
 			break;
 
 
@@ -559,7 +461,7 @@ void Zoo::start()
 
 		}
 
-		//calculate profit for the day (sum of (animalValue * animalCount) + tiger event bonus
+		//calculate profit for the day
 		dailyProfit = (m_tigers[0].getPayoffValue() * tigerCount) + bonus
 			+ (m_penguins[0].getPayoffValue() * penguinCount)
 			+ (m_turtles[0].getPayoffValue() * turtleCount);
@@ -573,16 +475,13 @@ void Zoo::start()
 			<< "\tFrom Turtles:  " << (m_turtles[0].getPayoffValue() * turtleCount) << "\n"
 			<< "\tTOTAL:         " << (dailyProfit) << "\n\n" << std::endl;;
 
-
-
-		//add the zoo profits to player balance
 		bound_player.deposit(dailyProfit);
-
-
 
 		//ask player if they would like to buy an adult animal, if they do, ask for animal type
 		//add the ADULT animal to the zoo and subtract cost
+
 		playerBuyChoice = validateInputYN(dailyBuyPromptMenu.getPrompt(1));
+
 		if (playerBuyChoice == 'y') {
 			switch (dailyBuyMenu.getUserChoice()) {
 			case 1:
@@ -619,22 +518,14 @@ void Zoo::start()
 			repeatMenu.displayMessage("Would you like to continue playing? ");
 			userChoice = repeatMenu.getUserChoice();
 		}
-		dayCount++;
-
 	}
+
+	dayCount++;
 }
 
-
-/*
-Calculate total feed cost of the zoo
-
-Sum of (number of animals * feed cost per animal)
-
-*/
 double Zoo::getFeedCost()
 {
 	double total = 0;
-
 	//cost of tigers:
 	total += (tigerCount * m_tigers[0].getFeedCost());
 
@@ -648,13 +539,7 @@ double Zoo::getFeedCost()
 }
 
 
-/*
-Event that simulates the removal of an animal from the zoo.
 
-The function picks an animal type to remove randomly, if the player does not have any of the 
-animal type selected (from the truth value of the remove function), nothing happens.
-
-*/
 void Zoo::removeAnimalEvent()
 {
 	switch (generateRandom(1, 3)) {
@@ -663,7 +548,7 @@ void Zoo::removeAnimalEvent()
 
 	//tiger death
 	case 1:
-		if (removeTiger()) {		//if a tiger can be removed, remove it and print
+		if (removeTiger()) {
 			output << "A sudden sickness has affected the tigers, one has died. " << std::endl;
 		}
 		else {
@@ -673,7 +558,7 @@ void Zoo::removeAnimalEvent()
 
 	//penguin death
 	case 2:
-		if (removePenguin()) {		//if a penguin can be removed, remove it and print
+		if (removePenguin()) {
 			output << "A sudden sickness has affected the penguins, one has died. " << std::endl;
 		}
 		else {
@@ -683,7 +568,7 @@ void Zoo::removeAnimalEvent()
 
 	//turtle death
 	case 3:
-		if (removeTurtle()) {		//if a turtle can be removed, remove it and print
+		if (removeTurtle()) {
 			output << "A sudden sickness has affected the turtle, one has died. " << std::endl;
 		}
 		else {
@@ -696,21 +581,6 @@ void Zoo::removeAnimalEvent()
 
 }
 
-
-
-
-/*
-Function that simulates an attendance boom event at the zoo.
-
-Calculates a bonus based on the number of tigers and a random amount (250-500) for each tiger.
-
-for each tiger
-	-generate random number
-	-add to total
-
-Return:
-	double - the calcuated bonus from all tigers
-*/
 double Zoo::attendanceBoomEvent()
 {
 
@@ -742,30 +612,14 @@ double Zoo::attendanceBoomEvent()
 
 
 
-/*
-Function that simulates an animal birth at the zoo.
-
-Checks to see if the zoo has an available adult in any pen, if it does the first available
-adult between tiger, penguin, and turtle type is returned. -1 is returned for no adults
-
-If no adults, then function simply returns
-
-The function then generates a random number corresponding to an animal type
-	The animal type is then checked to see if there is an available adult
-	if there is an available adult
-		add animals with age 0 depending on the animal birth constant
-
-If the random function picks an animal type that does not have an adult, the function
-defaults to the value returned by the zooAdultState function, and that animal type has the birth.
-*/
 void Zoo::animalBirthEvent()
 {
 	output << "[Day: " << (dayCount) << "]"  "   (Event)"<< std::endl;
 	output << "\t";
 	
-	int zooAdultState = zooHasAdult();		//get information on available adults in zoo
+	int zooAdultState = zooHasAdult();
 
-	if (zooAdultState == -1) {				//no adults available in the zoo
+	if (zooAdultState == -1) {
 		output << "You hear tales of other zoos having a population boom today..." << std::endl;
 		return;
 	}
@@ -781,17 +635,17 @@ void Zoo::animalBirthEvent()
 		switch (animalType) {
 		case TIGER:
 			output << "A tiger has given birth to " << (m_tigers[0].getNumberOfBabies()) << " babie(s)!" << std::endl;
-			addTiger(m_tigers[0].getNumberOfBabies(), BABY);		//get baby-factor from class, add then to the pen with age 0
+			addTiger(m_tigers[0].getNumberOfBabies(), BABY);
 			break;
 
 		case PENGUIN:
 			output << "A penguin has given birth to " << (m_penguins[0].getNumberOfBabies()) << " babie(s)!" << std::endl;
-			addPenguin(m_penguins[0].getNumberOfBabies(), BABY);	//get baby-factor from class, add then to the pen with age 0
+			addPenguin(m_penguins[0].getNumberOfBabies(), BABY);
 			break;
 
 		case TURTLE:
 			output << "A turtle has given birth to " << (m_turtles[0].getNumberOfBabies()) << " babie(s)!" << std::endl;
-			addTurtle(m_turtles[0].getNumberOfBabies(), BABY);		//get baby-factor from class, add then to the pen with age 0
+			addTurtle(m_turtles[0].getNumberOfBabies(), BABY);
 			break;
 		}
 
@@ -799,21 +653,21 @@ void Zoo::animalBirthEvent()
 
 	}
 	else {
-		//generate a baby event from the guarenteed adult returned from zooAdultState
+		//generate a baby event from the guarenteed adult from zooAdultState
 		switch (zooAdultState) {
 		case TIGER:
 			output << "A tiger has given birth to " << (m_tigers[0].getNumberOfBabies()) << " babies!" << std::endl;
-			addTiger(m_tigers[0].getNumberOfBabies(), BABY);		//get baby-factor from class, add then to the pen with age 0
+			addTiger(m_tigers[0].getNumberOfBabies(), BABY);
 			break;
 
 		case PENGUIN:
 			output << "A penguin has given birth to " << (m_penguins[0].getNumberOfBabies()) << " babies!" << std::endl;
-			addPenguin(m_penguins[0].getNumberOfBabies(), BABY);	//get baby-factor from class, add then to the pen with age 0
+			addPenguin(m_penguins[0].getNumberOfBabies(), BABY);
 			break;
 
 		case TURTLE:
 			output << "A turtle has given birth to " << (m_turtles[0].getNumberOfBabies()) << " babies!" << std::endl;
-			addTurtle(m_turtles[0].getNumberOfBabies(), BABY);		//get baby-factor from class, add then to the pen with age 0
+			addTurtle(m_turtles[0].getNumberOfBabies(), BABY);
 			break;
 		}
 	}
@@ -821,25 +675,12 @@ void Zoo::animalBirthEvent()
 	output << std::endl;
 }
 
-
-
-/*
-Function to check to see if the zoo has an adult of the given animal type
-
-Loops through each respective animal array and returns true if an adult is found, false if not
-
-Param:
-	animalType - type of animal to check adult state for
-
-Return:
-	bool - truth value of if an adult animal of that type exists
-*/
 bool Zoo::hasAdult(ANIMAL_TYPE animalType)
 {
 	switch (animalType) {
 	case TIGER:
 		for (int i = 0; i < tigerCount; i++) {
-			if (m_tigers[i].isAdult()) {	//check for animal adults
+			if (m_tigers[i].getAge() >= ADULT) {
 				return true;
 			}
 		}
@@ -847,7 +688,7 @@ bool Zoo::hasAdult(ANIMAL_TYPE animalType)
 
 	case PENGUIN:
 		for (int i = 0; i < tigerCount; i++) {
-			if (m_penguins[i].isAdult()) {	//check for animal adults
+			if (m_penguins[i].getAge() >= ADULT) {
 				return true;
 			}
 		}
@@ -855,7 +696,7 @@ bool Zoo::hasAdult(ANIMAL_TYPE animalType)
 
 	case TURTLE:
 		for (int i = 0; i < tigerCount; i++) {
-			if (m_turtles[i].isAdult()) {	//check for animal adults
+			if (m_turtles[i].getAge() >= ADULT) {
 				return true;
 			}
 		}
@@ -865,17 +706,6 @@ bool Zoo::hasAdult(ANIMAL_TYPE animalType)
 	return false;
 }
 
-
-/*
-Function that checks to see if there is at least 1 adult in the zoo.
-
-int - code that tells calling function information about the state of adults in the zoo
-	-1 - no adults in the zoo
-	 0 - A tiger adult is available
-	 1 - No tiger adults, but penguin adults available
-	 2 - No tiger adults and no penguin adults, but turtle adult available
-
-*/
 int Zoo::zooHasAdult()
 {
 	if (hasAdult(TIGER)) {
